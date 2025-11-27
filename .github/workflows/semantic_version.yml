@@ -1,0 +1,30 @@
+name: Semantic Versioning
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Determine version bump
+        id: version
+        run: |
+          MESSAGE=$(git log -1 --pretty=%s)
+          if [[ $MESSAGE == feat:* ]]; then
+            echo "level=minor" >> $GITHUB_OUTPUT
+          elif [[ $MESSAGE == fix:* ]]; then
+            echo "level=patch" >> $GITHUB_OUTPUT
+          else
+            echo "level=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Bump version
+        uses: anothrNick/github-tag-action@v1
+        if: steps.version.outputs.level != 'none'
+        with:
+          tag_prefix: "v"
+          default_bump: ${{ steps.version.outputs.level }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
