@@ -1,0 +1,24 @@
+name: CYW Commit Prefix Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate Commit Messages
+        run: |
+          echo "Checking commit message..."
+          if ! grep -E '^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|cyw-core|vlan10|vlan20|vlan30|vlan40|vlan50|packet|os-spec|notion|slides|release|hotfix|wip|meta):' <<< "$(git log -1 --pretty=%s)"; then
+            echo "❌ ERROR: Commit does not follow CYW prefix standard."
+            exit 1
+          fi
+          echo "✅ Commit prefix validated."
