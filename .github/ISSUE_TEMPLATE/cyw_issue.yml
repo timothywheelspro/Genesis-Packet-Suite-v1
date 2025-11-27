@@ -1,0 +1,41 @@
+name: CYW Issue
+description: Standardized issue template aligned with CYW VLAN + Commit Standard
+title: "[vlanXX]: short title"
+labels: ["routing"]
+body:
+  - type: dropdown
+    id: prefix
+    attributes:
+      label: Commit Prefix
+      description: Select the prefix that matches your change.
+      options:
+        - feat
+        - fix
+        - docs
+        - style
+        - refactor
+        - perf
+        - test
+        - chore
+        - build
+        - ci
+        - cyw-core
+        - vlan10
+        - vlan20
+        - vlan30
+        - vlan40
+        - vlan50
+        - packet
+        - os-spec
+        - notion
+        - slides
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: What change do you want to make?
+    validations:
+      required: true
